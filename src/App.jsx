@@ -6,18 +6,20 @@ import Dashboard from './pages/Dashboard';
 import Control from './pages/Control';
 import History from './pages/History';
 import AIRecommendations from './pages/AIRecommendations';
+import About from './pages/About';
 
 function App() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow pt-20">
+      <main className="flex-grow pt-2">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/control" element={<Control />} />
           <Route path="/history" element={<History />} />
           <Route path="/ai-recommendations" element={<AIRecommendations />} />
+          <Route path='/about' element={<About/>}/>
         </Routes>
       </main>
       <Footer />
