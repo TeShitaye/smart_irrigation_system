@@ -85,7 +85,7 @@ function Footer() {
         {/* Bottom Text */}
         <div className="mt-4 text-center">
           <p className="text-xs opacity-60">
-            Powered by xAI & Open-Source Community
+            JIT, FECE final Thesis  
           </p>
         </div>
       </div>
