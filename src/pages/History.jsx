@@ -12,7 +12,18 @@ import {
   Legend,
 } from 'chart.js';
 import {
-  FaHistory, FaFilter, FaDownload, FaExclamationTriangle, FaComment,
+  FaHistory, FaFilter, FaDownload, FaExclamationTriangle, FaComment, FaCalendarAlt, FaWater, FaTemperatureHigh, FaChartLine,
+  FaSun,
+  FaCloud,
+  FaWind,
+  FaBolt,
+  FaRegClock,
+  FaRegCalendarAlt,
+  FaRegLightbulb,
+  FaChartBar,
+  FaChartPie,
+  FaLeaf,
+  FaTint
 } from 'react-icons/fa';
 import axios from 'axios';
 
@@ -25,6 +36,7 @@ function History() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
   const apiUrl = 'http://10.141.120.181:5000/history';
+  const [selectedPeriod, setSelectedPeriod] = useState('week');
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -169,154 +181,214 @@ function History() {
     </motion.div>
   );
 
+  // Sample data for the charts
+  const moistureData = {
+    labels: ['ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሐሙስ', 'አርብ', 'ቅዳሜ', 'እሁድ'],
+    datasets: [
+      {
+        label: 'የአፈር እርጥበት / Qaroo Lafa',
+        data: [65, 59, 80, 81, 56, 55, 70],
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const temperatureData = {
+    labels: ['ሰኞ', 'ማክሰኞ', 'ረቡዕ', 'ሐሙስ', 'አርብ', 'ቅዳሜ', 'እሁድ'],
+    datasets: [
+      {
+        label: 'የአየር ሙቀት / Ho\'a Qilleensa',
+        data: [25, 28, 26, 30, 27, 29, 28],
+        borderColor: 'rgb(255, 99, 132)',
+        tension: 0.4,
+      },
+    ],
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-100 via-green-100 to-teal-100 py-10">
-      <div className="container mx-auto px-4 mt-20 max-w-6xl">
-        <motion.h2
-          className="text-4xl font-extrabold text-gray-800 text-center mb-10 flex items-center justify-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
+    <div className="min-h-screen font-['Poppins'] bg-gradient-to-br from-emerald-50 via-lime-50 to-green-50">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-0 w-[600px] h-[600px] bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob" />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-lime-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000" />
+        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-green-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000" />
+      </div>
+
+      <div className="container mx-auto px-6 py-12 relative z-10">
+        {/* Header Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
+          className="mb-12 mt-16 text-center"
         >
-          <FaHistory className="mr-3 text-blue-600" /> Historical Insights
-        </motion.h2>
-
-        {error && (
-          <motion.div
-            className="bg-red-100 bg-opacity-80 backdrop-blur-sm p-4 rounded-lg mb-6 flex items-center justify-center"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <FaExclamationTriangle className="text-red-500 mr-2" />
-            <p className="text-red-700 text-sm">{error}</p>
-          </motion.div>
-        )}
-
-        {loading && (
-          <motion.div
-            className="flex justify-center mb-6"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-          </motion.div>
-        )}
-
-        <FilterCard />
-
-        <motion.div
-          className="bg-white bg-opacity-20 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white border-opacity-30 mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <Line data={chartData} options={chartOptions} />
+          <h1 className="text-6xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-4">
+            የታሪክ መረጃ
+            <div className="text-3xl font-normal text-emerald-600 mt-2">
+              Odeeffannoo Seenaa
+            </div>
+          </h1>
+          <p className="text-xl text-emerald-700 max-w-3xl mx-auto">
+            የቀደመው የመስኖ ስርዓት እና የአየር ሁኔታ መረጃዎችን ይከታተሉ።
+            <div className="text-lg text-emerald-600 mt-1">
+              Seenaa sirna roobaa fi qilleensa ilaaluu.
+            </div>
+          </p>
         </motion.div>
 
+        {/* Period Selection */}
         <motion.div
-          className="bg-white bg-opacity-20 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white border-opacity-30 mb-6"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-wrap gap-4 mb-12"
         >
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800 flex items-center">
-              <FaComment className="text-blue-500 mr-2" /> SMS Alerts
-            </h3>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-gray-700 text-sm">
-              <thead>
-                <tr className="bg-gray-100 bg-opacity-50">
-                  <th className="p-2">Timestamp</th>
-                  <th className="p-2">Message</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredHistory
-                  .filter((item) => item.type === 'sms' && item.sms_alert)
-                  .map((item, index) => (
-                    <motion.tr
-                      key={index}
-                      className="border-b hover:bg-gray-50 hover:bg-opacity-30 group"
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                    >
-                      <td className="p-2">{item.sms_timestamp || item.timestamp}</td>
-                      <td className="p-2">{item.sms_alert}</td>
-                      <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 -mt-8 ml-2">
-                        {item.sms_alert}
-                      </div>
-                    </motion.tr>
-                  ))}
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
-
-        <motion.div
-          className="bg-white bg-opacity-20 backdrop-blur-lg p-6 rounded-xl shadow-lg border border-white border-opacity-30 overflow-x-auto"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-        >
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-800">History Log</h3>
-            <motion.button
-              onClick={exportToCSV}
-              className="py-2 px-4 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-lg flex items-center text-sm"
-              whileHover={{ scale: 1.05, rotate: 2 }}
-              whileTap={{ scale: 0.95 }}
+          {[
+            { value: 'week', label: 'የሳምንቱ', sublabel: 'Torbee' },
+            { value: 'month', label: 'የወሩ', sublabel: 'Ji\'oota' },
+            { value: 'year', label: 'የዓመቱ', sublabel: 'Waggaa' }
+          ].map((period) => (
+            <button
+              key={period.value}
+              onClick={() => setSelectedPeriod(period.value)}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                selectedPeriod === period.value
+                  ? 'bg-emerald-600 text-white shadow-lg'
+                  : 'bg-white text-emerald-600 hover:bg-emerald-50 shadow-md'
+              }`}
             >
-              <FaDownload className="mr-2" /> Export CSV
-            </motion.button>
+              {period.label}
+              <div className={`text-sm font-normal ${selectedPeriod === period.value ? 'text-emerald-100' : 'text-emerald-500'}`}>
+                {period.sublabel}
+              </div>
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Charts Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12"
+        >
+          {/* Soil Moisture Chart */}
+          <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-emerald-100">
+            <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-6">
+              የአፈር እርጥበት ታሪክ
+              <div className="text-lg font-normal text-emerald-600">
+                Seenaa Qaroo Lafaa
+              </div>
+            </h3>
+            <div className="h-[300px]">
+              <Line data={moistureData} options={chartOptions} />
+            </div>
           </div>
-          <table className="w-full text-left text-gray-700 text-sm">
-            <thead>
-              <tr className="bg-gray-100 bg-opacity-50">
-                <th className="p-2">Timestamp</th>
-                <th className="p-2">Type</th>
-                <th className="p-2">Soil Moisture (%)</th>
-                <th className="p-2">Soil Temp (°C)</th>
-                <th className="p-2">Tank Level (cm)</th>
-                <th className="p-2">Ambient Temp (°C)</th>
-                <th className="p-2">Humidity (%)</th>
-                <th className="p-2">Mode</th>
-                <th className="p-2">Irrigation</th>
-                <th className="p-2">River Pump</th>
-                <th className="p-2">Farmland Pump</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredHistory.map((item, index) => (
-                <motion.tr
-                  key={index}
-                  className="border-b hover:bg-gray-50 hover:bg-opacity-30 group"
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                >
-                  <td className="p-2">{item.timestamp}</td>
-                  <td className="p-2">{item.type}</td>
-                  <td className="p-2">{item.soil_moisture || '-'}</td>
-                  <td className="p-2">{item.soil_temp || '-'}</td>
-                  <td className="p-2">{item.tank_level || '-'}</td>
-                  <td className="p-2">{item.ambient_temp || '-'}</td>
-                  <td className="p-2">{item.humidity || '-'}</td>
-                  <td className="p-2">{item.irrigation_mode || '-'}</td>
-                  <td className="p-2">{item.irrigation_state ? 'On' : 'Off'}</td>
-                  <td className="p-2">{item.pump_river ? 'On' : 'Off'}</td>
-                  <td className="p-2">{item.pump_farmland ? 'On' : 'Off'}</td>
-                  <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs rounded p-1 -mt-8 ml-2">
-                    {item.type}
-                  </div>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
+
+          {/* Temperature Chart */}
+          <div className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-emerald-100">
+            <h3 className="text-2xl font-bold text-center bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent mb-6">
+              የአየር ሙቀት ታሪክ
+              <div className="text-lg font-normal text-emerald-600">
+                Seenaa Ho\'a Qilleensa
+              </div>
+            </h3>
+            <div className="h-[300px]">
+              <Line data={temperatureData} options={chartOptions} />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Summary Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+        >
+          {[
+            {
+              icon: <FaTint className="w-8 h-8 text-blue-500" />,
+              title: "አማካይ የአፈር እርጥበት",
+              subtitle: "Qaroo Lafaa Giddugaleessa",
+              value: "65%",
+              bgColor: "bg-blue-50",
+              textColor: "text-blue-700"
+            },
+            {
+              icon: <FaTemperatureHigh className="w-8 h-8 text-red-500" />,
+              title: "አማካይ የአየር ሙቀት",
+              subtitle: "Ho\'a Qilleensa Giddugaleessa",
+              value: "25°C",
+              bgColor: "bg-red-50",
+              textColor: "text-red-700"
+            },
+            {
+              icon: <FaWater className="w-8 h-8 text-emerald-500" />,
+              title: "አጠቃላይ የውሃ አጠቃቀም",
+              subtitle: "Fayyadama Bishaan Waliigalaa",
+              value: "1,200L",
+              bgColor: "bg-emerald-50",
+              textColor: "text-emerald-700"
+            }
+          ].map((stat, index) => (
+            <motion.div
+              key={index}
+              className={`${stat.bgColor} backdrop-blur-sm p-6 rounded-2xl shadow-xl border border-${stat.textColor.split('-')[1]}-100 hover:shadow-2xl transition-all duration-300`}
+              whileHover={{ scale: 1.02 }}
+            >
+              <div className="flex items-center gap-4">
+                <div className="p-3 bg-white rounded-xl shadow-lg">
+                  {stat.icon}
+                </div>
+                <div>
+                  <h3 className={`text-lg font-semibold ${stat.textColor}`}>
+                    {stat.title}
+                    <div className="text-sm font-normal text-gray-600">
+                      {stat.subtitle}
+                    </div>
+                  </h3>
+                  <p className="text-2xl font-bold mt-2">{stat.value}</p>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Download Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="bg-white/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-emerald-100"
+        >
+          <div className="flex items-center justify-between">
+            <div className="text-center flex-1">
+              <h3 className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-green-600 bg-clip-text text-transparent">
+                መረጃዎችን ያውሩ
+                <div className="text-lg font-normal text-emerald-600">
+                  Odeeffannoo Maxxansi
+                </div>
+              </h3>
+              <p className="text-gray-600 mt-2">
+                የታሪክ መረጃዎችን በ CSV ፎርማት ያውሩ።
+                <div className="text-sm text-gray-500">
+                  Odeeffannoo seenaa CSV fakkiiitti maxxansi.
+                </div>
+              </p>
+            </div>
+            <button
+              onClick={exportToCSV}
+              className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-emerald-600 to-green-600 text-white rounded-xl font-semibold hover:from-emerald-700 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              <FaDownload className="w-5 h-5" />
+              ያውሩ
+              <div className="text-sm font-normal text-emerald-100">
+                Maxxansi
+              </div>
+            </button>
+          </div>
         </motion.div>
       </div>
     </div>

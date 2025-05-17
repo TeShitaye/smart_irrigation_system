@@ -1,14 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { FaSun, FaMoon, FaBars, FaTimes } from 'react-icons/fa';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
-import { useTheme } from '../context/ThemeContext';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const { isDarkMode, toggleTheme } = useTheme();
 
   // Handle scroll to hide/show navbar
   useEffect(() => {
@@ -30,16 +28,12 @@ function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  const handleThemeToggle = () => {
-    toggleTheme();
-  };
-
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/dashboard', label: 'Dashboard' },
+    { path: '/dashboard', label: 'Dashboard'  },
     { path: '/control', label: 'Control' },
     { path: '/history', label: 'History' },
-    { path: '/ai-recommendations', label: 'AI Recommendations' },
+    { /*path: '/ai-recommendations', label: 'AI Recommendations'*/ },
     { path: '/about', label: 'About' },
   ];
 
@@ -69,19 +63,6 @@ function Navbar() {
               {link.label}
             </NavLink>
           ))}
-          
-          {/* Theme Toggle Button */}
-          <button
-            onClick={handleThemeToggle}
-            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-all duration-200"
-            aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {isDarkMode ? (
-              <FaSun className="w-5 h-5 text-yellow-500" />
-            ) : (
-              <FaMoon className="w-5 h-5 text-blue-500" />
-            )}
-          </button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -114,15 +95,6 @@ function Navbar() {
                   {link.label}
                 </NavLink>
               ))}
-              
-              {/* Mobile Theme Toggle */}
-              <button
-                onClick={handleThemeToggle}
-                className="flex items-center space-x-2 text-gray-600"
-              >
-                <span>{isDarkMode ? 'Light Mode' : 'Dark Mode'}</span>
-                {isDarkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
-              </button>
             </div>
           </motion.div>
         )}
